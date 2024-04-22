@@ -1,4 +1,5 @@
 from config import db
+from flask import jsonify
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -6,10 +7,10 @@ class Contact(db.Model):
     last_name = db.Column(db.String(100), nullable=False, unique=False)
     email = db.Column(db.String(150), nullable=False, unique=False)
 
-def to_json(self):
-    return {
-        "id": self.id,
-        "firstName": self.first_name,
-        "lastName": self.last_name,
-        "email": self.email
-    }
+    def to_json(self):
+        return {
+            "id": self.id,
+            "firstName": self.first_name,
+            "lastName": self.last_name,
+            "email": self.email
+        }

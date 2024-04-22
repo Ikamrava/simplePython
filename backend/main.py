@@ -5,13 +5,14 @@ from models import Contact
 @app.route('/contacts', methods=['GET'])
 def get_contacts():
     contacts = Contact.query.all()
-    json_contact = list(map(lambda x: x.to_json(), contacts))
-    return jsonify({"contacts": json_contact})
+    json_contacts = [contact.to_json() for contact in contacts]
+    return json_contacts
+
 
 @app.route('/create_contact', methods=['POST'])
 def create_contact():
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
+    first_name = request.json.get('firstName')
+    last_name = request.json.get('lastName')
     email = request.json.get('email')
 
     if not first_name or not last_name or not email:
@@ -63,10 +64,6 @@ def update_contact(user_id):
         return jsonify({"message": str(e)}), 400
 
     return jsonify({"message": "Contact updated successfully"}), 200
-
-    
-
-
 
 
 if __name__ == '__main__':
