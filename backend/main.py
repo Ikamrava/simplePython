@@ -26,7 +26,43 @@ def create_contact():
     
     return jsonify({"message": "Contact created successfully"}), 201
 
-      
+
+@app.route('/delete_contact/<int:user_id>', methods=['DELETE'])
+def delete_contact(user_id):
+    contact = Contact.query.get(user_id)
+    if not contact:
+        return jsonify({"message": "Contact not found"}),
+
+    try:
+        db.session.delete(contact)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "Contact deleted successfully"}), 200
+   
+
+
+
+@app.route('/update_contact/<int:user_id>', methods=['PATCH'])
+def update_contact(user_id):
+  
+    contact = Contact.query.get(user_id)
+    if not contact:
+        return jsonify({"message": "Contact not found"}), 
+    
+    data = request.json
+    contact.first_name = data.get('firstName', contact.first_name)
+    contact.last_name = data.get('lastName', contact.last_name)
+    contact.email = data.get('email', contact.email)
+
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "Contact updated successfully"}), 200
 
     
 
